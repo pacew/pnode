@@ -3,3 +3,4 @@
 *.o
 reset
 set74880
+udpmon

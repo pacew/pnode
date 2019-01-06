@@ -1,0 +1,12 @@
+#! /bin/bash
+
+read -p "ssid: " ssid
+read -s -p "password: " pw
+
+echo $ssid $pw
+
+trap 'rm -f TMP.auth' 0
+echo "wifi_auth = { ssid = '$ssid', pw = '$pw' }" > TMP.auth
+./putfile TMP.auth auth.lua
+
+rm -f TMP.auth

@@ -1,13 +1,27 @@
 #! /bin/sh
 
-if [ $# != 1 ]
+if [ $# = 0 ]
 then
-    echo "usage: putfile FILE.lua"
+    echo "usage: putfile [-r] FILE [destname]"
     exit 1
 fi
 
-src=$1
-dst=`basename $src`
+runflag=0
+if [ "x$1" = "x-r" ]
+then
+    runflag=1
+    shift
+fi
+
+src="$1"
+shift
+
+if [ $# = 0 ]
+then
+    dst=`basename $src`
+else
+    dst="$1"
+fi
 
 echo sending `stat --format %s $src` bytes
 
@@ -28,3 +42,9 @@ sleep 0.2
     # terminate transmisson with a dot on a line by itself
     echo "." 
 ) > /dev/ttyUSB0
+
+if [ $runflag = 1 ]
+then
+    sleep 0.5
+    echo "dofile('${dst}')" > /dev/ttyUSB0
+fi
