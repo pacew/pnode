@@ -1,0 +1,10 @@
+#! /bin/bash
+
+IFS=
+while read -r line
+do
+    echo "$line"
+    sleep 0.1
+done < rcvfile.lua > /dev/ttyUSB0
+
+./putfile rcvfile.lua

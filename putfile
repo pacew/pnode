@@ -1,0 +1,30 @@
+#! /bin/sh
+
+if [ $# != 1 ]
+then
+    echo "usage: putfile FILE.lua"
+    exit 1
+fi
+
+src=$1
+dst=`basename $src`
+
+echo sending `stat --format %s $src` bytes
+
+echo "dofile('rcvfile.lua')" > /dev/ttyUSB0
+sleep 0.2
+
+echo "rcvfile('${dst}')" > /dev/ttyUSB0
+sleep 0.2
+
+(
+    cat $src
+    # if file doesn't end in newline, add one
+    tail -c 1 $src | grep . > /dev/null 2>&1
+    if [ $? = 0 ]
+    then
+	echo ""
+    fi
+    # terminate transmisson with a dot on a line by itself
+    echo "." 
+) > /dev/ttyUSB0
