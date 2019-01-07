@@ -1,3 +1,7 @@
+-- standard modules: file gpio net node timer uart wifi
+-- extra modules: pwm crypto
+-- use float build
+
 if stop ~= nil then
    stop()
 end
@@ -89,8 +93,6 @@ max_usecs = 2 * 1000 * 1000
 function tick()
    report_status()
    
-   seq = seq + 1
-
    debounce()
 
    xmit_this_time = false
@@ -111,6 +113,7 @@ function tick()
    end
 
    last_xmit_usecs = tmr.now()
+   seq = seq + 1
 
    local inputs = 0
 
@@ -125,6 +128,7 @@ function tick()
    table.insert(ret, wifi.ap.getmac())
    table.insert(ret, seq)
    table.insert(ret, tmr.now())
+   table.insert(ret, node.heap())
    table.insert(ret, string.format ("0x%x", inputs))
    
    local str = table.concat (ret, ' ')
