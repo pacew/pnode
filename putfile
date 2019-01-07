@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 if [ $# = 0 ]
 then
@@ -32,10 +32,11 @@ echo "rcvfile('${dst}')" > /dev/ttyUSB0
 sleep 0.2
 
 (
+    IFS=""
     while read -r line
     do
 	echo "$line"
-	sleep 0.001
+	sleep 0.01
     done < $src
     # if file doesn't end in newline, add one
     tail -c 1 $src | grep . > /dev/null 2>&1
