@@ -15,6 +15,41 @@
 
 int fd;
 
+int cur_rts;
+int cur_dtr;
+
+void
+setrts (int val)
+{
+	int flag;
+	flag = TIOCM_RTS;
+	if (val)
+		ioctl (fd, TIOCMBIS, &flag);
+	else
+		ioctl (fd, TIOCMBIC, &flag);
+
+	cur_rts = val;
+	printf ("[rts=%d]", val);
+	fflush (stdout);
+}
+
+void
+setdtr (int val)
+{
+	int flag;
+	flag = TIOCM_DTR;
+	flag = -1;
+	if (val)
+		ioctl (fd, TIOCMBIS, &flag);
+	else
+		ioctl (fd, TIOCMBIC, &flag);
+
+	cur_dtr = val;
+	printf ("[dtr=%d]", val);
+	fflush (stdout);
+
+}
+
 void setspeed(int fd, int bit_per_sec);
 
 int curspeed;
@@ -69,6 +104,8 @@ main (int argc, char **argv)
 	fcntl (0, F_SETFL, O_NONBLOCK);
 
 	speed (74880);
+	setrts (0);
+	setdtr (0);
 
 	matchp = match;
 
@@ -97,6 +134,12 @@ main (int argc, char **argv)
 					break;
 				case 'I' & 037:
 					speed (9600);
+					break;
+				case 'R' & 037:
+					setrts (! cur_rts);
+					break;
+				case 'D' & 037:
+					setdtr (! cur_dtr);
 					break;
 	
 				default:

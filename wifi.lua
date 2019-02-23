@@ -38,8 +38,9 @@ function setup_wifi()
       dump_table (T)
    end
 
+   wifi.setmode (wifi.STATION)
    wifi.sta.config (cfg)
-   
+   wifi.sta.connect()
 end
 
 function getip ()

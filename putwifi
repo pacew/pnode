@@ -10,3 +10,6 @@ echo "wifi_auth = { ssid = '$ssid', pw = '$pw' }" > TMP.auth
 ./putfile TMP.auth auth.lua
 
 rm -f TMP.auth
+
+echo "Now you want"
+echo "./putfile -r wifi.lua"
